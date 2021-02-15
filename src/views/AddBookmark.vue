@@ -4,7 +4,6 @@
   <div class="modal add-bookmark">
     <h3>{{addBookmarkTitle}}</h3>
 
-
       <label class="add-bookmark__title" for="bookmark-title">
         Name
         <input @blur="blurLocalTitle" v-focus type="text"
@@ -13,7 +12,6 @@
         <p class="error" v-if="$v.localBookmark.localTitle.$dirty &&
          !$v.localBookmark.localTitle.required">this field is required</p>
       </label>
-
 
     <label class="add-bookmark__link" for="bookmark-link">
       URL
@@ -26,10 +24,11 @@
 
 
     <div class="add-bookmark__btn">
-      <button @click="checkUrl" class="btn">Cancel</button>
-      <button :disabled="$v.$anyError" @click="checkUrl(localBookmark)"
+      <button @click="cancelBookmark" class="btn">Cancel</button>
+      <button :disabled="$v.$anyError" @click="saveBookmark(localBookmark)"
               class="btn">Save</button>
     </div>
+
   </div>
 </div>
 </template>
@@ -72,15 +71,17 @@ export default {
   },
   methods: {
     ...mapActions(['bookmarkEdit', 'bookmarkEditAdd']),
-    checkUrl(localBookmark) {
-      if (this.$route.path === '/add-bookmark') {
-        if (localBookmark.localTitle) {
-          this.addBookmark(localBookmark.localTitle, localBookmark.localLink);
-        }
+    cancelBookmark() {
+      this.$router.push('/bookmarks');
+      this.$emit('close-add-modal');
+    },
+    saveBookmark(localBookmark) {
+      if (localBookmark.localId) {
+        this.changeBookmark(localBookmark);
+      } else {
+        this.addBookmark(localBookmark.localTitle, localBookmark.localLink);
         this.$router.push('/bookmarks');
       }
-      this.changeBookmark(localBookmark);
-      this.$emit('close-add-modal');
     },
     changeBookmark(localBookmark) {
       const bookmark = {

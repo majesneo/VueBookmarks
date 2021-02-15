@@ -8,13 +8,11 @@
             alt="add bookmarks img">
      </router-link>
    </div>
-    <div class="bookmark">
-      <div class="bookmark__list"
-           v-for="bookmark in bookmarks" :key="bookmark.id">
-        <bookmark  :bookmark="bookmark"></bookmark>
+
+      <div class="bookmark" v-for="bookmark in bookmarks" :key="bookmark.id">
+        <bookmark  :bookmark="bookmark" />
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -57,6 +55,11 @@ export default {
   max-width: 1000px;
   padding: 5px 20px;
   margin-top: 30px;
+}
+@media screen and (max-width: 550px) {
+  .bookmarks-container{
+    width: 85%;
+  }
 }
 
 </style>

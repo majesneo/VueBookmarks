@@ -5,6 +5,6 @@ export default {
     .then(() => {
 
     }).catch(() => {
-
+      // console.error(e);
     }),
 };

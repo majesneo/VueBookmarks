@@ -1,29 +1,30 @@
 <template>
   <div  class="bookmark__item">
-    <img class="bookmark__item-icon"  :src="bookmark.icon" alt="icon">
+    <img class="bookmark__item-icon"  :src="`https://www.google.com/s2/favicons?&sz=64&domain=${bookmark.link}`" alt="icon">
     <p class="bookmark__item-title">{{ bookmark.title }}</p>
     <a target="_blank" :href="bookmark.link" class="bookmark__item-link">{{bookmark.link}}</a>
-    <div  class="bookmark__item-edit" @click.self="dropdown">
-      <edit-bookmark @copy-url-bookmark="copyUrl" @remove-bookmark="bookmarkEditRemove(bookmark)"
-                     @show-add-modal="showModal"
-                      @close-dropdown="edit=false" v-if="edit"></edit-bookmark>
+    <div  class="bookmark__item-edit" @click.self="edit=!edit">
+      <dropdown-bookmark @copy-url-bookmark="copyUrl"
+                         @remove-bookmark="bookmarkEditRemove(bookmark)"
+                         @show-add-modal="showModal"
+                         @close-dropdown="edit=false" v-if="edit" />
     </div>
-      <add-bookmark @close-add-modal="closeModal"
+      <add-bookmark @close-add-modal="addModal = false;"
                     v-if="addModal" :title="bookmark.title"
-                    :link="bookmark.link" :id="bookmark.id"></add-bookmark>
+                    :link="bookmark.link" :id="bookmark.id" />
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import AddBookmark from '../views/AddBookmark';
-import EditBookmark from './EditBookmark';
+import DropdownBookmark from './DropdownBookmark';
 import writeToClipboard from '../common/writeToClipboard';
 
 
 export default {
   name: 'Bookmark',
-  components: { EditBookmark, AddBookmark },
+  components: { DropdownBookmark, AddBookmark },
   props: {
     bookmark: {
       type: Object,
@@ -38,15 +39,9 @@ export default {
   },
   methods: {
     ...mapActions(['bookmarkEditRemove']),
-    dropdown() {
-      this.edit = true;
-    },
     showModal() {
       this.addModal = true;
       this.edit = false;
-    },
-    closeModal() {
-      this.addModal = false;
     },
     copyUrl() {
       writeToClipboard.write(this.bookmark.link);
@@ -84,6 +79,15 @@ export default {
   width: 30%;
   text-decoration: none;
   min-width: 100px;
+}
+@media screen and (max-width: 420px) {
+  .bookmark__item-link{
+    order: 3;
+    width: 100%;
+  }
+  .bookmark__item{
+    flex-wrap: wrap;
+  }
 }
 .bookmark__item-edit{
   cursor: pointer;
