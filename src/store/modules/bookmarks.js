@@ -61,6 +61,7 @@ export default {
     changeTitle(state, bookmark) {
       state.bookmarks.forEach((bookmarkIter) => {
         if (bookmarkIter.id === bookmark.id) {
+          // eslint-disable-next-line no-param-reassign
           bookmarkIter.title = bookmark.title;
         }
       });
@@ -68,6 +69,7 @@ export default {
     changeLink(state, bookmark) {
       state.bookmarks.forEach((bookmarkIter) => {
         if (bookmarkIter.id === bookmark.id) {
+          // eslint-disable-next-line no-param-reassign
           bookmarkIter.link = bookmark.link;
         }
       });
